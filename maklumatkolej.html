@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maklumat Kolej UiTM Pulau Pinang</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="assets/icon_jpk.png"> <!-- Favicon Link -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        header {
+            background: #782982;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .content {
+            background: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .college-section {
+            margin-bottom: 40px;
+        }
+
+        .college-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+        .college-grid .college {
+            flex: 1 1 calc(33.333% - 20px);
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .college img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .college-name {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #782982;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background: #782982;
+            color: #fff;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #782982;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-weight: bold;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            background-color: #5a1f63;
+        }
+
+        /* Styles for date, time, and day */
+        .datetime-container {
+            text-align: right;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+            padding-right: 20px;
+        }
+
+        #currentDate, #currentTime {
+            display: block;
+        }
+
+        #currentDate {
+            font-weight: bold;
+        }
+
+        #currentTime {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Styles for header */
+        .schedule-header {
+            background-color: #782982;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            position: relative;
+            margin: auto;
+            padding: 0;
+            width: 80%;
+            max-width: 700px;
+            background: #fff;
+            border-radius: 10px;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: #fff;
+            font-size: 35px;
+            font-weight: bold;
+            transition: 0.3s;
+            z-index: 1002;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #goTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #782982;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-weight: bold;
+            font-size: 18px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #goTopBtn.show {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #goTopBtn:hover {
+            background-color: #5a1f63;
+        }
+
+        /* View Count Styles */
+        .view-count {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: #782982;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            z-index: 1000;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<!-- View Count Display -->
+<div class="view-count">Total Views: <span id="viewCount">0</span></div>
+
+<div class="schedule-header">
+    KOLEJ UiTM PULAU PINANG
+</div>
+
+<!-- Go to top button -->
+<button id="goTopBtn">&#8679;</button>
+
+<div class="datetime-container">
+    <span id="currentDate"></span>
+    <span id="currentTime"></span>
+</div> 
+
+<div class="container">
+    <header>
+        <h1>Maklumat Kolej UiTM Pulau Pinang</h1>
+    </header>
+
+    <div class="content">
+        <p>UiTM Pulau Pinang menyediakan perkhidmatan kolej kediaman untuk mahasiswa/mahasiswi. Perkhidmatan kolej dikendalikan oleh Unit Residensi & Hospitaliti Pelajar (URHP).</p>
+        <p>Terdapat tujuh blok kediaman di kampus UiTM Permatang Pauh dengan muatan 5798 orang (2584 siswa dan 3214 siswi).</p>
+
+        <!-- Kolej Siswa Section -->
+        <div class="college-section">
+            <h2>Kolej Siswa</h2>
+            <div class="college-grid">
+                <div class="college">
+                    <img src="assets/delima.png" alt="Kolej Delima" class="enlargeable">
+                    <div class="college-name">KOLEJ DELIMA</div>
+                </div>
+                <div class="college">
+                    <img src="assets/intan.png" alt="Kolej Intan" class="enlargeable">
+                    <div class="college-name">KOLEJ INTAN</div>
+                </div>
+                <div class="college">
+                    <img src="assets/baiduri.png" alt="Kolej Baiduri" class="enlargeable">
+                    <div class="college-name">KOLEJ BAIDURI</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kolej Siswi Section -->
+        <div class="college-section">
+            <h2>Kolej Siswi</h2>
+            <div class="college-grid">
+                <div class="college">
+                    <img src="assets/zamrud.png" alt="Kolej Zamrud" class="enlargeable">
+                    <div class="college-name">KOLEJ ZAMRUD</div>
+                </div>
+                <div class="college">
+                    <img src="assets/kristalA.png" alt="Kolej Kristal A" class="enlargeable">
+                    <div class="college-name">KOLEJ KRISTAL A</div>
+                </div>
+                <div class="college">
+                    <img src="assets/kristalB.png" alt="Kolej Kristal B" class="enlargeable">
+                    <div class="college-name">KOLEJ KRISTAL B</div>
+                </div>
+                <div class="college">
+                    <img src="assets/nilam.png" alt="Kolej Nilam" class="enlargeable">
+                    <div class="college-name">KOLEJ NILAM</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2024 UiTM Pulau Pinang. All Rights Reserved.
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="imgModal">
+</div>
+
+<script>
+    // View Count Logic
+    if (!sessionStorage.getItem('visitedInThisSession')) {
+        sessionStorage.setItem('visitedInThisSession', 'true');
+        
+        let totalViews = localStorage.getItem('totalViews') || 0;
+        totalViews++;
+        localStorage.setItem('totalViews', totalViews);
+    }
+
+    document.getElementById('viewCount').textContent = localStorage.getItem('totalViews') || 0;
+
+    // Date and Time Script
+    function updateDateTime() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const currentDate = now.toLocaleDateString('ms-MY', options).toUpperCase();
+        const currentTime = now.toLocaleTimeString();
+
+        document.getElementById('currentDate').textContent = currentDate;
+        document.getElementById('currentTime').textContent = currentTime;
+    }
+
+    setInterval(updateDateTime, 1000); // Update every second
+    updateDateTime(); // Initial call to set the date and time
+
+    // Scroll to top button
+    const goTopBtn = document.getElementById('goTopBtn');
+    window.onscroll = function() {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            goTopBtn.classList.add('show');
+        } else {
+            goTopBtn.classList.remove('show');
+        }
+    };
+
+    goTopBtn.addEventListener('click', function() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    });
+</script>
+
+<script>
+ // Modal logic
+ const modal = document.getElementById("myModal");
+    const modalImg = document.getElementById("imgModal");
+    const images = document.querySelectorAll('.enlargeable');
+    const closeModal = document.querySelector('.close');
+
+    images.forEach((img) => {
+        img.onclick = function () {
+            modal.style.display = "flex";
+            modalImg.src = this.src;
+        };
+    });
+
+    closeModal.onclick = function () {
+        modal.style.display = "none";
+    };
+
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
+</script>
+
+</body>
+</html>
